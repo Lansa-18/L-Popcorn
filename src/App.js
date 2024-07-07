@@ -1,27 +1,30 @@
-import { useEffect, useState } from 'react';
-import Loader from './components/Loader';
-import ErrorMessage from './components/ErrorMessage';
-import Navbar from './components/Navbar';
-import Search from './components/Search';
-import NumResults from './components/NumResults';
-import Box from './components/Box';
-import MovieList from './components/MovieList';
-import MovieDetails from './components/MovieDetails';
-import WatchedSummary from './components/WatchedSummary';
-import WatchedMovieList from './components/WatchedMovieList';
-import Main from './components/Main';
+import { useEffect, useState } from "react";
 
-export const average = arr =>
+import {
+  Box,
+  ErrorMessage,
+  Loader,
+  Main,
+  MovieDetails,
+  MovieList,
+  Navbar,
+  NumResults,
+  Search,
+  WatchedMovieList,
+  WatchedSummary,
+} from "./components/Index";
+
+export const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
-export const KEY = '4a1f7dc';
+export const KEY = "4a1f7dc";
 
 export default function App() {
-  const [query, setQuery] = useState('Inception');
+  const [query, setQuery] = useState("Inception");
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [selectedMovieId, setSelectedMovieId] = useState(null);
 
   // useEffect(function() {
@@ -39,7 +42,9 @@ export default function App() {
   // console.log('During Render');
 
   function handleSelectedMovie(id) {
-    setSelectedMovieId(selectedMovieId => (id === selectedMovieId ? null : id));
+    setSelectedMovieId((selectedMovieId) =>
+      id === selectedMovieId ? null : id
+    );
   }
 
   function handleCloseMovie() {
@@ -47,11 +52,11 @@ export default function App() {
   }
 
   function handleAddWatched(movie) {
-    setWatched(watched => [...watched, movie]);
+    setWatched((watched) => [...watched, movie]);
   }
 
   function handleDeleteWatched(id) {
-    setWatched(watched => watched.filter(movie => movie.imdbID !== id));
+    setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
   }
 
   useEffect(
@@ -59,17 +64,17 @@ export default function App() {
       async function fetchMovies() {
         try {
           setIsLoading(true);
-          setError('');
+          setError("");
           const res = await fetch(
             `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
           );
 
           if (!res.ok)
-            throw new Error('Something went wrong with fetching movies');
+            throw new Error("Something went wrong with fetching movies");
 
           const data = await res.json();
 
-          if (data.Response === 'False') throw new Error('Movie not found');
+          if (data.Response === "False") throw new Error("Movie not found");
 
           setMovies(data.Search);
         } catch (err) {
@@ -81,7 +86,7 @@ export default function App() {
 
       if (query.length < 3) {
         setMovies([]);
-        setError('');
+        setError("");
         return;
       }
 
@@ -122,7 +127,7 @@ export default function App() {
               <WatchedMovieList
                 watched={watched}
                 onDeleteWatched={handleDeleteWatched}
-              />{' '}
+              />{" "}
             </>
           )}
         </Box>
@@ -130,14 +135,3 @@ export default function App() {
     </>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
