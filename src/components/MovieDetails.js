@@ -73,10 +73,25 @@ export default function MovieDetails({
       // Cleanup Function
       return function () {
         document.title = 'usePopcorn';
-        console.log(`Clean up effect for movie ${title}`);
       };
     },
     [title]
+  );
+
+  useEffect(
+    function () {
+      function callBack(e) {
+        if (e.code === 'Escape') {
+          onCloseMovie();
+        }
+      }
+      document.addEventListener('keydown', callBack);
+
+      return function () {
+        document.removeEventListener('keydown', callBack);
+      };
+    },
+    [onCloseMovie]
   );
 
   return (

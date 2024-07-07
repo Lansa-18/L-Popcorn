@@ -20,7 +20,7 @@ export const average = arr =>
 export const KEY = '4a1f7dc';
 
 export default function App() {
-  const [query, setQuery] = useState('Lego');
+  const [query, setQuery] = useState('');
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -95,6 +95,7 @@ export default function App() {
         return;
       }
 
+      handleCloseMovie();
       fetchMovies();
 
       return function () {
