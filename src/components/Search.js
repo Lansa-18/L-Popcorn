@@ -1,11 +1,31 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function Search({ query, setQuery }) {
+  // BAD WAY OF DOING IT
+  // useEffect(function() {
+  //   const el = document.querySelector('.search');
+  //   console.log(el);
+  //   el.focus();
+  // }, [])
+
+  // GOOD WAY OF DOING IT
+  const inputEl = useRef(null);
+
   useEffect(function() {
-    const el = document.querySelector('.search');
-    console.log(el);
-    el.focus();
-  }, [])
+    function callback(e) {
+      if (e.code === 'Enter') {
+        if (document.activeElement === inputEl.current) return;
+
+        console.log('Enter was pressed');
+        inputEl.current.focus();
+        setQuery('');
+
+      }
+    }
+
+    document.addEventListener('keydown', callback)
+    return () => document.removeEventListener('keydown', callback);
+  }, [setQuery])
 
   return (
     <input
@@ -14,6 +34,7 @@ export default function Search({ query, setQuery }) {
       placeholder="Search movies..."
       value={query}
       onChange={e => setQuery(e.target.value)}
+      ref={inputEl}
     />
   );
 }
