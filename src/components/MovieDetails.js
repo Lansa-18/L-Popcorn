@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import StarRating from './StarRating';
-import Loader from './Loader';
-import { KEY } from '../App';
+import { useEffect, useState } from "react";
+import StarRating from "./StarRating";
+import Loader from "./Loader";
+import { KEY } from "../App";
 
 export default function MovieDetails({
   selectedMovieId,
@@ -11,14 +11,14 @@ export default function MovieDetails({
 }) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [userRating, setUserRating] = useState('');
+  const [userRating, setUserRating] = useState("");
 
   const isWatched = watched
-    .map(movie => movie.imdbID)
+    .map((movie) => movie.imdbID)
     .includes(selectedMovieId);
 
   const watchedUserRating = watched.find(
-    movie => movie.imdbID === selectedMovieId
+    (movie) => movie.imdbID === selectedMovieId
   )?.userRating;
 
   const {
@@ -34,6 +34,14 @@ export default function MovieDetails({
     Genre: genre,
   } = movie;
 
+  // Never use hooks inside conditionals and never call them at the top level of a function
+  // if (imdbRating > 8) [isTop, setIsTop] = useState(false);
+  // if (imdbRating > 8) return <p>Greatest Ever!!</p>
+
+  // DERIVED STATE
+  // const isTop = imdbRating > 8;
+  // console.log(isTop);
+
   function handleAdd() {
     const newWatchedMovie = {
       imdbID: selectedMovieId,
@@ -41,7 +49,7 @@ export default function MovieDetails({
       year,
       poster,
       imdbRating: Number(imdbRating),
-      runtime: runtime.split(' ').at(0),
+      runtime: runtime.split(" ").at(0),
       userRating,
     };
     onAddWatched(newWatchedMovie);
@@ -72,7 +80,7 @@ export default function MovieDetails({
 
       // Cleanup Function
       return function () {
-        document.title = 'usePopcorn';
+        document.title = "usePopcorn";
       };
     },
     [title]
@@ -81,14 +89,14 @@ export default function MovieDetails({
   useEffect(
     function () {
       function callBack(e) {
-        if (e.code === 'Escape') {
+        if (e.code === "Escape") {
           onCloseMovie();
         }
       }
-      document.addEventListener('keydown', callBack);
+      document.addEventListener("keydown", callBack);
 
       return function () {
-        document.removeEventListener('keydown', callBack);
+        document.removeEventListener("keydown", callBack);
       };
     },
     [onCloseMovie]
