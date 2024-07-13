@@ -11,21 +11,22 @@ export default function Search({ query, setQuery }) {
   // GOOD WAY OF DOING IT
   const inputEl = useRef(null);
 
-  useEffect(function() {
-    function callback(e) {
-      if (e.code === 'Enter') {
-        if (document.activeElement === inputEl.current) return;
+  useEffect(
+    function () {
+      function callback(e) {
+        if (e.code === "Enter") {
+          if (document.activeElement === inputEl.current) return;
 
-        console.log('Enter was pressed');
-        inputEl.current.focus();
-        setQuery('');
-
+          inputEl.current.focus();
+          setQuery("");
+        }
       }
-    }
 
-    document.addEventListener('keydown', callback)
-    return () => document.removeEventListener('keydown', callback);
-  }, [setQuery])
+      document.addEventListener("keydown", callback);
+      return () => document.removeEventListener("keydown", callback);
+    },
+    [setQuery]
+  );
 
   return (
     <input
@@ -33,7 +34,7 @@ export default function Search({ query, setQuery }) {
       type="text"
       placeholder="Search movies..."
       value={query}
-      onChange={e => setQuery(e.target.value)}
+      onChange={(e) => setQuery(e.target.value)}
       ref={inputEl}
     />
   );
