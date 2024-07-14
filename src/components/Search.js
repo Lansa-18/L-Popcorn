@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useKey } from "../useKey";
 
 export default function Search({ query, setQuery }) {
   // BAD WAY OF DOING IT
@@ -11,22 +12,11 @@ export default function Search({ query, setQuery }) {
   // GOOD WAY OF DOING IT
   const inputEl = useRef(null);
 
-  useEffect(
-    function () {
-      function callback(e) {
-        if (e.code === "Enter") {
-          if (document.activeElement === inputEl.current) return;
-
-          inputEl.current.focus();
-          setQuery("");
-        }
-      }
-
-      document.addEventListener("keydown", callback);
-      return () => document.removeEventListener("keydown", callback);
-    },
-    [setQuery]
-  );
+  useKey("Enter", function() {
+    if (document.activeElement === inputEl.current) return;
+    inputEl.current.focus();
+    setQuery("");
+  });
 
   return (
     <input
